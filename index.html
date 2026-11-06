@@ -3,132 +3,174 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>পৌঁছাও অ্যাপ</title>
+<meta name="theme-color" content="#14378F">
+<title>ডেলিভারি বন্ধু</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#EEF1F4;--surface:#fff;--ink:#14213D;--muted:#5B6578;--line:#D5DBE3;--tape:#F2B705;--go:#13896F;--map:#E4EAF0;--navy:#14213D;box-sizing:border-box}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--surface:#18203A;--ink:#EAF0FA;--muted:#9AA6BF;--line:#2B3556;--map:#1F2845;--go:#3DD1AE;--navy:#0A0F1C}}
-:root[data-theme="dark"]{--bg:#0E1424;--surface:#18203A;--ink:#EAF0FA;--muted:#9AA6BF;--line:#2B3556;--map:#1F2845;--go:#3DD1AE;--navy:#0A0F1C}
+:root{--navy:#14378F;--org:#F28C1B;--red:#EF4B23;--bg:#F4F6FB;--ink:#16224A;--mut:#5F6B8A;--line:#DCE2F0;color-scheme:light}
 *{box-sizing:border-box}
-html{color-scheme:light dark}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 "Hind Siliguri",system-ui,sans-serif}
-#app{max-width:480px;margin:0 auto;min-height:100dvh;padding:env(safe-area-inset-top,0px) 0 calc(76px + env(safe-area-inset-bottom,0px))}
-header{background:var(--navy);color:#fff;padding:18px 18px 26px;border-radius:0 0 22px 22px}
-header small{opacity:.7;display:block;line-height:1.3}
-header b{font-size:22px}
-.back{background:none;border:0;color:#fff;font:inherit;padding:0 0 6px;cursor:pointer}
-.wrap{padding:16px}
-.search{display:flex;gap:8px;margin-top:-34px;margin-bottom:16px}
-input{flex:1;min-width:0;font:inherit;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
-button{font:inherit;cursor:pointer}
-.go{font-weight:600;border:0;border-radius:12px;padding:0 16px;background:var(--tape);color:#14213D}
-:focus-visible{outline:3px solid var(--tape);outline-offset:1px}
-h2{font-size:16px;margin:18px 0 8px;color:var(--muted);font-weight:600}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:12px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;width:100%;text-align:left;background:none;border:0;color:inherit}
-.row+.row{border-top:1px solid var(--line)}
-.row small,.muted{color:var(--muted);font-size:14px;line-height:1.3;display:block}
-.chip{font-size:13px;font-weight:600;padding:2px 10px;border-radius:999px;background:var(--tape);color:#14213D;white-space:nowrap}
-.chip.done{background:var(--go);color:#fff}.chip.hub{background:var(--line);color:var(--ink)}
-.bar{height:8px;background:var(--line);border-radius:9px;margin-top:10px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--go);border-radius:9px}
-.hero{padding:16px;cursor:pointer;border:0;width:100%;text-align:left;color:inherit;background:none}
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.stats div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
-.stats b{font-size:24px;display:block;line-height:1.2}
-.status{padding:16px 18px;background:var(--tape);color:#14213D}.status.done{background:var(--go);color:#fff}.status b{display:block;font-size:20px}
-.map{background:var(--map)}.map svg{display:block;width:100%;height:auto}
-.sec{padding:16px 18px;border-top:1px solid var(--line)}
-ol{list-style:none;margin:0;padding:0}
-li{position:relative;padding:0 0 18px 34px}li:last-child{padding-bottom:0}
-li::before{content:"";position:absolute;left:9px;top:22px;bottom:-2px;width:2px;background:var(--line)}li:last-child::before{display:none}
-li.on::before{background:var(--go)}
-.dot{position:absolute;left:0;top:3px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:var(--surface)}
-li.on .dot{background:var(--go);border-color:var(--go)}
-li.now .dot{border-color:var(--tape);background:var(--tape);box-shadow:0 0 0 5px color-mix(in srgb,var(--tape) 30%,transparent)}
-li.off{color:var(--muted)}li small{display:block;color:var(--muted);font-size:14px;line-height:1.3}
-.call{font-weight:600;text-decoration:none;color:#14213D;background:var(--tape);padding:8px 16px;border-radius:10px}
-.sw{width:46px;height:26px;border-radius:99px;border:0;background:var(--line);position:relative;flex:none}
-.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
-.sw[aria-checked="true"]{background:var(--go)}.sw[aria-checked="true"]::after{left:23px}
-.ni{width:38px;height:38px;border-radius:50%;background:var(--tape);display:grid;place-items:center;flex:none;font-size:18px}
-nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-nav div{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
-nav button{background:none;border:0;color:var(--muted);padding:8px 0 6px;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:0}
-nav button[aria-current="true"]{color:var(--ink);font-weight:700}
-nav button[aria-current="true"] svg{stroke:var(--go)}
-nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-@media (prefers-reduced-motion:no-preference){.pulse{animation:p 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}@keyframes p{0%{transform:scale(1);opacity:.6}100%{transform:scale(3);opacity:0}}}
+body{margin:0;background:#dfe5f3;color:var(--ink);font:400 16px/1.5 "Hind Siliguri",system-ui,sans-serif}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--org);outline-offset:2px}
+.phone{max-width:480px;min-height:100dvh;margin:0 auto;background:var(--bg);position:relative;overflow:hidden}
+/* splash */
+#splash{position:fixed;inset:0;z-index:20;max-width:480px;margin:0 auto;background:linear-gradient(#2E7BF0,#BFE0FF 55%,#EAF4FF);display:flex;flex-direction:column;align-items:center;padding-top:env(safe-area-inset-top);cursor:pointer;transition:opacity .4s}
+#splash.out{opacity:0;pointer-events:none}
+#splash svg.r{width:78%;max-width:320px;margin-top:9vh}
+.logo{font-weight:700;line-height:1.05;text-align:center;font-size:56px;color:var(--navy);margin-top:6px;font-style:italic}
+.logo b{display:block;color:var(--red);font-size:64px}
+.pill{background:var(--navy);color:#fff;border-radius:40px;padding:10px 22px;text-align:center;margin:14px 18px;transform:rotate(-2deg)}
+.wave{margin-top:auto;width:100%;background:var(--navy);color:#fff;text-align:center;padding:26px 0 calc(22px + env(safe-area-inset-bottom));font-style:italic;font-size:20px;border-top:7px solid var(--org)}
+/* header */
+.hd{background:var(--navy);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 18px;border-radius:0 0 26px 26px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.top h1{margin:0;font-size:26px;font-style:italic}.top h1 b{color:var(--org)}
+.ic{background:none;border:0;color:#fff;font-size:26px;position:relative;width:44px;height:44px}
+.badge{position:absolute;top:2px;right:0;background:#E5252A;color:#fff;font-size:12px;font-weight:700;border-radius:99px;min-width:19px;height:19px;line-height:19px;text-align:center}
+.search{display:flex;align-items:center;background:#fff;border-radius:99px;padding:0 16px;gap:10px;color:var(--ink)}
+.search input{flex:1;min-width:0;border:0;background:none;font:inherit;padding:12px 0;outline:0;color:var(--ink)}
+main{padding:14px 14px calc(90px + env(safe-area-inset-bottom))}
+/* banner */
+.ban{position:relative;border-radius:18px;overflow:hidden;height:150px;background:linear-gradient(120deg,#7CC4FF,#D7EEFF)}
+.sl{position:absolute;inset:0;display:flex;align-items:center;opacity:0;transition:opacity .5s;padding:0 14px}
+.sl.on{opacity:1}
+.sl svg{width:44%;flex:none}
+.sl div{flex:1;text-align:center;font-weight:700;font-size:21px;line-height:1.25;color:var(--navy);font-style:italic}
+.sl div em{color:var(--red);display:block}
+.sl div span{display:block;font-size:14px;font-weight:500;background:var(--navy);color:#fff;border-radius:99px;padding:5px 10px;margin-top:8px;font-style:normal}
+.dots{display:flex;justify-content:center;gap:7px;margin:8px 0 12px}
+.dots i{width:8px;height:8px;border-radius:50%;background:#C5CCE0}.dots i.on{background:var(--navy)}
+.q{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.q button{border:0;border-radius:16px;padding:12px 2px 10px;font-weight:500;font-size:15px;line-height:1.2}
+.q span{display:block;font-size:34px;line-height:1.2}
+h2{font-size:18px;margin:18px 2px 10px;display:flex;justify-content:space-between;align-items:baseline}
+h2 a{font-size:14px;font-weight:500;color:var(--navy)}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);background:#E9EEFB;border-radius:16px;padding:12px 0;text-align:center;font-size:14px;line-height:1.2}
+.feat div+div{border-left:1px solid var(--line)}.feat span{display:block;font-size:28px}
+.cat{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.cat button{background:#E9EEFB;border:0;border-radius:14px;padding:10px 0 8px;font-size:13px}.cat span{display:block;font-size:34px;line-height:1.2}
+/* nav */
+nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav button{background:none;border:0;padding:8px 0 5px;font-size:12.5px;color:var(--mut);position:relative}
+nav svg{display:block;margin:0 auto;width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+nav button[aria-current=true]{color:var(--navy);font-weight:700}
+nav .badge{left:55%;right:auto;top:3px;background:var(--red)}
+/* inner screens */
+.bar{background:var(--navy);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 8px 14px;display:flex;align-items:center;gap:4px;border-radius:0 0 22px 22px}
+.bar b{font-size:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 15px;width:100%;text-align:left;background:none;border:0}
+.row+.row{border-top:1px solid var(--line)}.row small,.m{color:var(--mut);font-size:14px;line-height:1.3;display:block}
+.chip{font-size:13px;font-weight:600;padding:2px 10px;border-radius:99px;background:var(--org);color:#fff;white-space:nowrap}.chip.d{background:#13896F}.chip.h{background:#8793B3}
+.st{padding:15px 17px;background:var(--org);color:#fff}.st.d{background:#13896F}.st b{font-size:20px;display:block}
+.map svg{display:block;width:100%;background:#E4EEFB}
+.sec{padding:15px 17px;border-top:1px solid var(--line)}
+ol{list-style:none;margin:0;padding:0}li{position:relative;padding:0 0 16px 32px}li:last-child{padding:0}
+li::before{content:"";position:absolute;left:9px;top:22px;bottom:-2px;width:2px;background:var(--line)}li:last-child::before{display:none}li.on::before{background:#13896F}
+li i{position:absolute;left:0;top:3px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:#fff}
+li.on i{background:#13896F;border-color:#13896F}li.now i{background:var(--org);border-color:var(--org);box-shadow:0 0 0 5px #F28C1B44}li.off{color:var(--mut)}
+li small{color:var(--mut);font-size:14px;display:block;line-height:1.3}
+label{display:block;font-weight:600;margin:12px 0 4px}
+.f{width:100%;font:inherit;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+.btn{display:block;width:100%;margin-top:18px;border:0;border-radius:14px;background:var(--org);color:#fff;font-weight:700;font-size:18px;padding:13px}
+.call{background:var(--org);color:#fff;text-decoration:none;font-weight:600;padding:8px 16px;border-radius:10px}
+.soon{text-align:center;padding:60px 20px;color:var(--mut)}.soon span{font-size:56px;display:block}
+#toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;z-index:30;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+#toast.on{opacity:1}
 </style>
 </head>
 <body>
-<div id="app"></div>
-<nav><div id="nav"></div></nav>
+<svg width="0" height="0" style="position:absolute"><symbol id="rider" viewBox="0 0 200 160">
+<path d="M10 140H190" stroke="#fff" stroke-opacity=".5" stroke-width="6" stroke-linecap="round"/>
+<path d="M30 118Q48 84 108 92L148 72 165 82 150 120Z" fill="#2F6FED"/>
+<path d="M148 72l-4-28" stroke="#14378F" stroke-width="6" stroke-linecap="round"/>
+<rect x="30" y="38" width="58" height="44" rx="7" fill="#F28C1B"/><path d="M42 52h34M42 62h22" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+<rect x="88" y="46" width="32" height="44" rx="13" fill="#2A56B8"/>
+<circle cx="108" cy="30" r="15" fill="#F2C69B"/><path d="M92 30a16 16 0 0132 0z" fill="#2F6FED"/><path d="M118 52l24 6" stroke="#2A56B8" stroke-width="9" stroke-linecap="round"/>
+<circle cx="45" cy="132" r="19" fill="#1B2A4A"/><circle cx="45" cy="132" r="8" fill="#CBD5E1"/>
+<circle cx="155" cy="132" r="19" fill="#1B2A4A"/><circle cx="155" cy="132" r="8" fill="#CBD5E1"/></symbol></svg>
+
+<div id="splash" role="button" aria-label="শুরু করুন">
+  <svg class="r" viewBox="0 0 200 160"><use href="#rider"/></svg>
+  <div class="logo">ডেলিভারি<b>বন্ধু</b></div>
+  <div class="pill">আপনার পণ্য,<br>পৌঁছে যাবে আপনার ঠিকানায়!</div>
+  <div class="wave">সাথে আছি, সবসময়...</div>
+</div>
+
+<div class="phone" id="app"></div>
+<nav id="nav" hidden></nav>
+<div id="toast"></div>
+
 <script>
-var STEPS=["অর্ডার নেওয়া হয়েছে","পিকআপ হয়েছে","স্থানীয় হাবে পৌঁছেছে","ডেলিভারির পথে","ডেলিভারি সম্পন্ন"];
-var P={
- BD1001:{item:"ওয়্যারলেস হেডফোন",from:"টেকশপ বিডি, বসুন্ধরা",to:"মিরপুর ১০, ঢাকা",eta:"আজ বিকাল ৫টার মধ্যে",step:3,prog:.62,times:["৫ নভে, ১০:১৫","৫ নভে, ১৬:৪০","৬ নভে, ০৭:৩০","৬ নভে, ১১:২০",""],rider:["রফিক","01700000000"]},
- BD1003:{item:"জামা (২টি)",from:"ফ্যাশন হাউস, সিলেট",to:"মিরপুর ১০, ঢাকা",eta:"আগামীকাল দুপুরের মধ্যে",step:2,prog:.15,times:["৬ নভে, ০৮:৩০","৬ নভে, ১১:০০","৬ নভে, ১৪:১০","",""],rider:["জামাল","01900000000"]},
- BD1002:{item:"বই (৩টি)",from:"রকমারি, ধানমন্ডি",to:"মিরপুর ১০, ঢাকা",eta:"ডেলিভারি হয়ে গেছে",step:4,prog:1,times:["৩ নভে, ০৯:০০","৩ নভে, ১৭:২০","৪ নভে, ০৮:১০","৫ নভে, ১০:৪৫","৫ নভে, ১২:০৫"],rider:["করিম","01800000000"]}
+var STEPS=["অর্ডার নেওয়া হয়েছে","পিকআপ হয়েছে","হাবে পৌঁছেছে","ডেলিভারির পথে","ডেলিভারি সম্পন্ন"];
+var O={
+ BD1001:{item:"ওয়্যারলেস হেডফোন",from:"টেকশপ বিডি, বসুন্ধরা",to:"মিরপুর ১০, ঢাকা",eta:"আজ বিকাল ৫টার মধ্যে",s:3,p:.62,t:["৫ নভে, ১০:১৫","৫ নভে, ১৬:৪০","৬ নভে, ০৭:৩০","৬ নভে, ১১:২০",""],r:["রফিক","01700000000"]},
+ BD1003:{item:"জামা (২টি)",from:"ফ্যাশন হাউস, সিলেট",to:"মিরপুর ১০, ঢাকা",eta:"আগামীকাল দুপুরের মধ্যে",s:2,p:.15,t:["৬ নভে, ০৮:৩০","৬ নভে, ১১:০০","৬ নভে, ১৪:১০","",""],r:["জামাল","01900000000"]},
+ BD1002:{item:"বই (৩টি)",from:"রকমারি, ধানমন্ডি",to:"মিরপুর ১০, ঢাকা",eta:"ডেলিভারি হয়ে গেছে",s:4,p:1,t:["৩ নভে, ০৯:০০","৩ নভে, ১৭:২০","৪ নভে, ০৮:১০","৫ নভে, ১০:৪৫","৫ নভে, ১২:০৫"],r:["করিম","01800000000"]}
 };
-var NOTES=[["🛵","হেডফোন আপনার এলাকায় ডেলিভারির পথে","১১:২০"],["📍","জামা ঢাকা হাবে পৌঁছেছে","গতকাল"],["✅","বই সফলভাবে ডেলিভারি হয়েছে","৫ নভে"]];
-var ICONS={home:'<path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/>',box:'<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',bell:'<path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 21h4"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'};
-var TABS=[["home","হোম"],["box","পার্সেল"],["bell","নোটিফিকেশন"],["user","প্রোফাইল"]];
-var S={tab:"home",open:null,sms:true,push:true,err:""};
-function chip(p){return '<span class="chip '+(p.step===4?'done':p.step<3?'hub':'')+'">'+STEPS[p.step]+'</span>'}
-function map(p){
- var d="M30 140 C80 130 90 60 150 70 S240 120 290 35";
- return '<div class="map"><svg viewBox="0 0 320 170" role="img" aria-label="রুট"><path d="'+d+'" fill="none" stroke="var(--line)" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 9"/><path id="d" d="'+d+'" fill="none" stroke="var(--go)" stroke-width="5" stroke-linecap="round"/><circle cx="30" cy="140" r="8" fill="var(--ink)"/><path d="M290 18c-9 0-15 7-15 15 0 11 15 24 15 24s15-13 15-24c0-8-6-15-15-15z" fill="var(--tape)" stroke="var(--ink)" stroke-width="2"/><circle cx="290" cy="33" r="5" fill="var(--ink)"/><g id="m"><circle class="pulse" r="9" fill="var(--tape)"/><circle r="9" fill="var(--tape)" stroke="var(--ink)" stroke-width="3"/></g></svg></div>';
-}
-function detail(id){
- var p=P[id],done=p.step===4;
- var h='<header><button class="back" data-a="back">← পেছনে</button><small>'+id+'</small><b>'+p.item+'</b></header><div class="wrap"><div class="card"><div class="status'+(done?' done':'')+'"><b>'+STEPS[p.step]+'</b>'+p.eta+'</div>';
- if(p.step===3)h+=map(p);
- h+='<div class="sec"><ol>';
- STEPS.forEach(function(s,i){var c=i<=p.step?(i===p.step&&!done?'on now':'on'):'off';h+='<li class="'+c+'"><span class="dot"></span>'+s+'<small>'+(p.times[i]||'এখনো হয়নি')+'</small></li>'});
- h+='</ol></div><div class="sec"><span class="muted">প্রেরক</span>'+p.from+'<br><span class="muted">ঠিকানা</span>'+p.to+'</div>';
- if(!done)h+='<div class="sec row" style="padding:16px 18px"><div><span class="muted">ডেলিভারি ম্যান</span><b>'+p.rider[0]+'</b></div><a class="call" href="tel:'+p.rider[1]+'">কল করুন</a></div>';
- return h+'</div></div>';
-}
+var NAV=[["home","হোম",'<path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/>'],["cat","ক্যাটাগরি",'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>'],["cart","কার্ট",'<path d="M3 4h3l3 11h9l3-8H7"/><circle cx="10" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/>'],["fav","পছন্দের",'<path d="M12 21S3 14 3 8.5A4.5 4.5 0 0112 6a4.5 4.5 0 019 2.5C21 14 12 21 12 21z"/>'],["me","প্রোফাইল",'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>']];
+var V={v:"home",id:null},app=document.getElementById("app"),nav=document.getElementById("nav"),sl=0,timer;
+function $(h){return h}
+function chip(o){return '<span class="chip '+(o.s===4?'d':o.s<3?'h':'')+'">'+STEPS[o.s]+'</span>'}
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.className="on";setTimeout(function(){t.className=""},2200)}
+function bar(t){return '<div class="bar"><button class="ic" data-go="home" aria-label="পেছনে">←</button><b>'+t+'</b></div>'}
+
 function home(){
- var a=P.BD1001;
- return '<header><small>স্বাগতম</small><b>হ্যালো, সুমন</b></header><div class="wrap"><div class="search"><input id="q" placeholder="ট্র্যাকিং আইডি লিখুন" aria-label="ট্র্যাকিং আইডি"><button class="go" data-a="find">খুঁজুন</button></div>'+(S.err?'<p class="muted" style="margin:-6px 0 12px">'+S.err+'</p>':'')+
- '<div class="stats"><div><b>২</b><span class="muted">চলমান</span></div><div><b>১</b><span class="muted">সম্পন্ন</span></div><div><b>০</b><span class="muted">সমস্যা</span></div></div>'+
- '<h2>এখন যেটা পথে</h2><div class="card"><button class="hero" data-open="BD1001"><div class="row" style="padding:0"><div><b>'+a.item+'</b><small>BD1001 · '+a.eta+'</small></div>'+chip(a)+'</div><div class="bar"><i style="width:75%"></i></div><small class="muted" style="margin-top:6px">৫টি স্টপ বাকি · রফিক আসছেন</small></button></div></div>';
+ var B=[["দ্রুত ডেলিভারি","নিশ্চিত করুন!","ডেলিভারি বন্ধু সবসময় পাশে আছে"],["পার্সেল পাঠান","সহজে ও নিরাপদে","যেকোনো জায়গায়, যেকোনো সময়"],["লাইভ ট্র্যাকিং","পণ্য কোথায় দেখুন","প্রতি ধাপে আপডেট পান"]];
+ var h='<div class="hd"><div class="top"><button class="ic" aria-label="মেনু">☰</button><h1>ডেলিভারি <b>বন্ধু</b></h1><button class="ic" data-go="orders" aria-label="নোটিফিকেশন">🔔<span class="badge">3</span></button></div>'+
+ '<form class="search" id="sf"><span aria-hidden="true">🔍</span><input id="q" placeholder="কী ডেলিভারি করতে চান? (আইডি: BD1001)" aria-label="খুঁজুন"></form></div><main>'+
+ '<div class="ban">'+B.map(function(b,i){return '<div class="sl'+(i?'':' on')+'"><svg viewBox="0 0 200 160"><use href="#rider"/></svg><div>'+b[0]+'<em>'+b[1]+'</em><span>'+b[2]+'</span></div></div>'}).join("")+'</div><div class="dots">'+B.map(function(b,i){return '<i'+(i?'':' class="on"')+'></i>'}).join("")+'</div>'+
+ '<div class="q">'+[["new","📦","নতুন অর্ডার","#E3ECFF"],["orders","📍","আমার অর্ডার","#DDF3E1"],["soon","🎧","সাপোর্ট","#EBE2FA"],["soon","👛","ওয়ালেট","#FCE9D0"]].map(function(x){return '<button data-go="'+x[0]+'" style="background:'+x[3]+'"><span>'+x[1]+'</span>'+x[2]+'</button>'}).join("")+'</div>'+
+ '<h2>কেন ডেলিভারি বন্ধু? <a>আরও দেখুন →</a></h2><div class="feat"><div><span>⚡</span>দ্রুত<br>ডেলিভারি</div><div><span>✅</span>নিরাপদ<br>লেনদেন</div><div><span>👍</span>বিশ্বস্ত<br>সেবা</div><div><span>🎁</span>আকর্ষণীয়<br>অফার</div></div>'+
+ '<h2>জনপ্রিয় ক্যাটাগরি <a>আরও দেখুন →</a></h2><div class="cat">'+[["📱","মোবাইল"],["🎧","ইলেকট্রনিক্স"],["👕","পোশাক"],["🍳","গৃহস্থালী"],["⋯","আরও"]].map(function(c){return '<button data-go="soon"><span>'+c[0]+'</span>'+c[1]+'</button>'}).join("")+'</div></main>';
+ return h;
 }
-function list(){
- var h='<header><small>সব পার্সেল</small><b>আমার পার্সেল</b></header><div class="wrap"><div class="card">';
- Object.keys(P).forEach(function(id){var p=P[id];h+='<button class="row" data-open="'+id+'"><div><b>'+p.item+'</b><small>'+id+' · '+p.from+'</small></div>'+chip(p)+'</button>'});
- return h+'</div></div>';
+function orders(){
+ var h=bar("আমার অর্ডার")+'<main><div class="card">';
+ Object.keys(O).forEach(function(k){var o=O[k];h+='<button class="row" data-id="'+k+'"><div><b>'+o.item+'</b><small>'+k+' · '+o.from+'</small></div>'+chip(o)+'</button>'});
+ return h+'</div></main>';
 }
-function notes(){
- var h='<header><small>আপডেট</small><b>নোটিফিকেশন</b></header><div class="wrap"><div class="card">';
- NOTES.forEach(function(n){h+='<div class="row"><span class="ni">'+n[0]+'</span><div style="flex:1">'+n[1]+'</div><small>'+n[2]+'</small></div>'});
- return h+'</div></div>';
+function detail(k){
+ var o=O[k],d=o.s===4,h=bar(o.item)+'<main><div class="card"><div class="st'+(d?' d':'')+'"><b>'+STEPS[o.s]+'</b>'+o.eta+'</div>';
+ if(o.s===3)h+='<div class="map"><svg viewBox="0 0 320 170" role="img" aria-label="রুট"><path d="M30 140C80 130 90 60 150 70S240 120 290 35" fill="none" stroke="#C5CCE0" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 9"/><path id="d" d="M30 140C80 130 90 60 150 70S240 120 290 35" fill="none" stroke="#13896F" stroke-width="5" stroke-linecap="round"/><circle cx="30" cy="140" r="8" fill="#16224A"/><circle cx="290" cy="35" r="9" fill="#EF4B23"/><circle id="m" r="10" fill="#F28C1B" stroke="#16224A" stroke-width="3"/></svg></div>';
+ h+='<div class="sec"><ol>'+STEPS.map(function(s,i){return '<li class="'+(i<=o.s?(i===o.s&&!d?'on now':'on'):'off')+'"><i></i>'+s+'<small>'+(o.t[i]||'এখনো হয়নি')+'</small></li>'}).join("")+'</ol></div>';
+ h+='<div class="sec"><span class="m">প্রেরক</span>'+o.from+'<br><span class="m">ঠিকানা</span>'+o.to+'</div>';
+ if(!d)h+='<div class="sec row" style="padding:15px 17px"><div><span class="m">ডেলিভারি ম্যান</span><b>'+o.r[0]+'</b></div><a class="call" href="tel:'+o.r[1]+'">কল করুন</a></div>';
+ return h+'</div></main>';
 }
-function prof(){
- function sw(k,t){return '<div class="row"><span>'+t+'</span><button class="sw" role="switch" aria-label="'+t+'" aria-checked="'+S[k]+'" data-sw="'+k+'"></button></div>'}
- return '<header><small>অ্যাকাউন্ট</small><b>সুমন আহমেদ</b></header><div class="wrap"><div class="card"><div class="row"><div><small>ফোন</small>01712-345678</div></div><div class="row"><div><small>ডিফল্ট ঠিকানা</small>মিরপুর ১০, ঢাকা</div></div></div><h2>নোটিফিকেশন</h2><div class="card">'+sw('sms','SMS আপডেট')+sw('push','পুশ নোটিফিকেশন')+'</div></div>';
+function neu(){
+ return bar("নতুন অর্ডার")+'<main><label for="a">কী পাঠাবেন?</label><input class="f" id="a" placeholder="যেমন: কাপড়ের প্যাকেট"><label for="b">পিকআপ ঠিকানা</label><input class="f" id="b" placeholder="কোথা থেকে নেবো"><label for="c">ডেলিভারি ঠিকানা</label><input class="f" id="c" placeholder="কোথায় পৌঁছাবো"><button class="btn" data-a="place">অর্ডার করুন</button></main>';
 }
+function soon(){return bar("শীঘ্রই আসছে")+'<div class="soon"><span>🚧</span>এই অংশটি তৈরি হচ্ছে।</div>'}
+
 function render(){
- var app=document.getElementById("app");
- app.innerHTML=S.open?detail(S.open):({home:home,box:list,bell:notes,user:prof}[S.tab==="home"?"home":S.tab])();
- var nav=document.getElementById("nav");
- nav.innerHTML=TABS.map(function(t){return '<button data-tab="'+t[0]+'" aria-current="'+(!S.open&&S.tab===t[0])+'"><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+t[1]+'</button>'}).join("");
- var r=document.getElementById("d");
- if(r){var L=r.getTotalLength(),p=P[S.open],pt=r.getPointAtLength(L*p.prog);r.style.strokeDasharray=(L*p.prog)+" "+L;document.getElementById("m").setAttribute("transform","translate("+pt.x+" "+pt.y+")")}
+ var v=V.v,html=({home:home,orders:orders,new:neu,soon:soon})[v];
+ app.innerHTML=V.id?detail(V.id):(html?html():soon());
+ var tabs=!V.id&&(v==="home"||["cat","cart","fav","me"].indexOf(v)>-1);
+ nav.hidden=false;
+ nav.innerHTML=NAV.map(function(n){return '<button data-go="'+n[0]+'" aria-current="'+((n[0]==="home"&&(v==="home"||v==="orders"||v==="new"||V.id))||(n[0]===v))+'"><svg viewBox="0 0 24 24">'+n[2]+'</svg>'+(n[0]==="cart"?'<span class="badge">2</span>':'')+n[1]+'</button>'}).join("");
+ var d=document.getElementById("d");
+ if(d){var L=d.getTotalLength(),p=O[V.id].p,pt=d.getPointAtLength(L*p);d.style.strokeDasharray=L*p+" "+L;var m=document.getElementById("m");m.setAttribute("cx",pt.x);m.setAttribute("cy",pt.y)}
+ var sf=document.getElementById("sf");
+ if(sf)sf.onsubmit=function(e){e.preventDefault();var k=document.getElementById("q").value.replace(/[\s-]+/g,"").toUpperCase();if(O[k]){V.id=k;render()}else toast("অর্ডার পাওয়া যায়নি")};
+ clearInterval(timer);
+ if(document.querySelector(".sl"))timer=setInterval(function(){var s=document.querySelectorAll(".sl"),d=document.querySelectorAll(".dots i");if(!s.length)return;s[sl].classList.remove("on");d[sl].classList.remove("on");sl=(sl+1)%s.length;s[sl].classList.add("on");d[sl].classList.add("on")},3000);
  window.scrollTo(0,0);
 }
 document.addEventListener("click",function(e){
- var t=e.target.closest("[data-tab],[data-open],[data-a],[data-sw]");if(!t)return;
- if(t.dataset.tab){S.tab=t.dataset.tab;S.open=null;S.err=""}
- else if(t.dataset.open){S.open=t.dataset.open}
- else if(t.dataset.sw){S[t.dataset.sw]=!S[t.dataset.sw]}
- else if(t.dataset.a==="back"){S.open=null}
- else if(t.dataset.a==="find"){var v=document.getElementById("q").value.replace(/[\s-]+/g,"").toUpperCase();if(P[v]){S.open=v;S.err=""}else S.err="পার্সেল পাওয়া যায়নি। BD1001 চেষ্টা করুন।"}
+ var t=e.target.closest("[data-go],[data-id],[data-a]");if(!t)return;
+ if(t.dataset.id){V.id=t.dataset.id}
+ else if(t.dataset.go){V.id=null;V.v=t.dataset.go==="home"&&V.v==="home"?"home":t.dataset.go}
+ else if(t.dataset.a==="place"){
+  var a=document.getElementById("a").value.trim(),b=document.getElementById("b").value.trim(),c=document.getElementById("c").value.trim();
+  if(!a||!b||!c)return toast("সব ঘর পূরণ করুন");
+  var k="BD"+(1004+Object.keys(O).length-3);O[k]={item:a,from:b,to:c,eta:"পিকআপের অপেক্ষায়",s:0,p:0,t:["এইমাত্র","","","",""],r:["শীঘ্রই","01000000000"]};
+  toast("অর্ডার হয়েছে: "+k);V.id=k;
+ }
  render();
 });
-render();
+function start(){var s=document.getElementById("splash");s.classList.add("out");render()}
+document.getElementById("splash").onclick=start;setTimeout(start,2600);
 </script>
 </body>
 </html>
