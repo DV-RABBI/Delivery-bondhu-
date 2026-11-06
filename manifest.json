@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "ডেলিভারি বন্ধু",
+  "short_name": "ডেলিভারি বন্ধু",
+  "description": "পার্সেল ডেলিভারি ও ট্র্যাকিং",
+  "lang": "bn",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#14378F",
+  "theme_color": "#14378F",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
