@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>পৌঁছাও অ্যাপ</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF1F4;--surface:#fff;--ink:#14213D;--muted:#5B6578;--line:#D5DBE3;--tape:#F2B705;--go:#13896F;--map:#E4EAF0;--navy:#14213D;box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1424;--surface:#18203A;--ink:#EAF0FA;--muted:#9AA6BF;--line:#2B3556;--map:#1F2845;--go:#3DD1AE;--navy:#0A0F1C}}
+:root[data-theme="dark"]{--bg:#0E1424;--surface:#18203A;--ink:#EAF0FA;--muted:#9AA6BF;--line:#2B3556;--map:#1F2845;--go:#3DD1AE;--navy:#0A0F1C}
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 "Hind Siliguri",system-ui,sans-serif}
+#app{max-width:480px;margin:0 auto;min-height:100dvh;padding:env(safe-area-inset-top,0px) 0 calc(76px + env(safe-area-inset-bottom,0px))}
+header{background:var(--navy);color:#fff;padding:18px 18px 26px;border-radius:0 0 22px 22px}
+header small{opacity:.7;display:block;line-height:1.3}
+header b{font-size:22px}
+.back{background:none;border:0;color:#fff;font:inherit;padding:0 0 6px;cursor:pointer}
+.wrap{padding:16px}
+.search{display:flex;gap:8px;margin-top:-34px;margin-bottom:16px}
+input{flex:1;min-width:0;font:inherit;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+button{font:inherit;cursor:pointer}
+.go{font-weight:600;border:0;border-radius:12px;padding:0 16px;background:var(--tape);color:#14213D}
+:focus-visible{outline:3px solid var(--tape);outline-offset:1px}
+h2{font-size:16px;margin:18px 0 8px;color:var(--muted);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;width:100%;text-align:left;background:none;border:0;color:inherit}
+.row+.row{border-top:1px solid var(--line)}
+.row small,.muted{color:var(--muted);font-size:14px;line-height:1.3;display:block}
+.chip{font-size:13px;font-weight:600;padding:2px 10px;border-radius:999px;background:var(--tape);color:#14213D;white-space:nowrap}
+.chip.done{background:var(--go);color:#fff}.chip.hub{background:var(--line);color:var(--ink)}
+.bar{height:8px;background:var(--line);border-radius:9px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--go);border-radius:9px}
+.hero{padding:16px;cursor:pointer;border:0;width:100%;text-align:left;color:inherit;background:none}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.stats div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stats b{font-size:24px;display:block;line-height:1.2}
+.status{padding:16px 18px;background:var(--tape);color:#14213D}.status.done{background:var(--go);color:#fff}.status b{display:block;font-size:20px}
+.map{background:var(--map)}.map svg{display:block;width:100%;height:auto}
+.sec{padding:16px 18px;border-top:1px solid var(--line)}
+ol{list-style:none;margin:0;padding:0}
+li{position:relative;padding:0 0 18px 34px}li:last-child{padding-bottom:0}
+li::before{content:"";position:absolute;left:9px;top:22px;bottom:-2px;width:2px;background:var(--line)}li:last-child::before{display:none}
+li.on::before{background:var(--go)}
+.dot{position:absolute;left:0;top:3px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:var(--surface)}
+li.on .dot{background:var(--go);border-color:var(--go)}
+li.now .dot{border-color:var(--tape);background:var(--tape);box-shadow:0 0 0 5px color-mix(in srgb,var(--tape) 30%,transparent)}
+li.off{color:var(--muted)}li small{display:block;color:var(--muted);font-size:14px;line-height:1.3}
+.call{font-weight:600;text-decoration:none;color:#14213D;background:var(--tape);padding:8px 16px;border-radius:10px}
+.sw{width:46px;height:26px;border-radius:99px;border:0;background:var(--line);position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
+.sw[aria-checked="true"]{background:var(--go)}.sw[aria-checked="true"]::after{left:23px}
+.ni{width:38px;height:38px;border-radius:50%;background:var(--tape);display:grid;place-items:center;flex:none;font-size:18px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav div{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav button{background:none;border:0;color:var(--muted);padding:8px 0 6px;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:0}
+nav button[aria-current="true"]{color:var(--ink);font-weight:700}
+nav button[aria-current="true"] svg{stroke:var(--go)}
+nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:no-preference){.pulse{animation:p 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}@keyframes p{0%{transform:scale(1);opacity:.6}100%{transform:scale(3);opacity:0}}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav><div id="nav"></div></nav>
+<script>
+var STEPS=["অর্ডার নেওয়া হয়েছে","পিকআপ হয়েছে","স্থানীয় হাবে পৌঁছেছে","ডেলিভারির পথে","ডেলিভারি সম্পন্ন"];
+var P={
+ BD1001:{item:"ওয়্যারলেস হেডফোন",from:"টেকশপ বিডি, বসুন্ধরা",to:"মিরপুর ১০, ঢাকা",eta:"আজ বিকাল ৫টার মধ্যে",step:3,prog:.62,times:["৫ নভে, ১০:১৫","৫ নভে, ১৬:৪০","৬ নভে, ০৭:৩০","৬ নভে, ১১:২০",""],rider:["রফিক","01700000000"]},
+ BD1003:{item:"জামা (২টি)",from:"ফ্যাশন হাউস, সিলেট",to:"মিরপুর ১০, ঢাকা",eta:"আগামীকাল দুপুরের মধ্যে",step:2,prog:.15,times:["৬ নভে, ০৮:৩০","৬ নভে, ১১:০০","৬ নভে, ১৪:১০","",""],rider:["জামাল","01900000000"]},
+ BD1002:{item:"বই (৩টি)",from:"রকমারি, ধানমন্ডি",to:"মিরপুর ১০, ঢাকা",eta:"ডেলিভারি হয়ে গেছে",step:4,prog:1,times:["৩ নভে, ০৯:০০","৩ নভে, ১৭:২০","৪ নভে, ০৮:১০","৫ নভে, ১০:৪৫","৫ নভে, ১২:০৫"],rider:["করিম","01800000000"]}
+};
+var NOTES=[["🛵","হেডফোন আপনার এলাকায় ডেলিভারির পথে","১১:২০"],["📍","জামা ঢাকা হাবে পৌঁছেছে","গতকাল"],["✅","বই সফলভাবে ডেলিভারি হয়েছে","৫ নভে"]];
+var ICONS={home:'<path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/>',box:'<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',bell:'<path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 21h4"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'};
+var TABS=[["home","হোম"],["box","পার্সেল"],["bell","নোটিফিকেশন"],["user","প্রোফাইল"]];
+var S={tab:"home",open:null,sms:true,push:true,err:""};
+function chip(p){return '<span class="chip '+(p.step===4?'done':p.step<3?'hub':'')+'">'+STEPS[p.step]+'</span>'}
+function map(p){
+ var d="M30 140 C80 130 90 60 150 70 S240 120 290 35";
+ return '<div class="map"><svg viewBox="0 0 320 170" role="img" aria-label="রুট"><path d="'+d+'" fill="none" stroke="var(--line)" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 9"/><path id="d" d="'+d+'" fill="none" stroke="var(--go)" stroke-width="5" stroke-linecap="round"/><circle cx="30" cy="140" r="8" fill="var(--ink)"/><path d="M290 18c-9 0-15 7-15 15 0 11 15 24 15 24s15-13 15-24c0-8-6-15-15-15z" fill="var(--tape)" stroke="var(--ink)" stroke-width="2"/><circle cx="290" cy="33" r="5" fill="var(--ink)"/><g id="m"><circle class="pulse" r="9" fill="var(--tape)"/><circle r="9" fill="var(--tape)" stroke="var(--ink)" stroke-width="3"/></g></svg></div>';
+}
+function detail(id){
+ var p=P[id],done=p.step===4;
+ var h='<header><button class="back" data-a="back">← পেছনে</button><small>'+id+'</small><b>'+p.item+'</b></header><div class="wrap"><div class="card"><div class="status'+(done?' done':'')+'"><b>'+STEPS[p.step]+'</b>'+p.eta+'</div>';
+ if(p.step===3)h+=map(p);
+ h+='<div class="sec"><ol>';
+ STEPS.forEach(function(s,i){var c=i<=p.step?(i===p.step&&!done?'on now':'on'):'off';h+='<li class="'+c+'"><span class="dot"></span>'+s+'<small>'+(p.times[i]||'এখনো হয়নি')+'</small></li>'});
+ h+='</ol></div><div class="sec"><span class="muted">প্রেরক</span>'+p.from+'<br><span class="muted">ঠিকানা</span>'+p.to+'</div>';
+ if(!done)h+='<div class="sec row" style="padding:16px 18px"><div><span class="muted">ডেলিভারি ম্যান</span><b>'+p.rider[0]+'</b></div><a class="call" href="tel:'+p.rider[1]+'">কল করুন</a></div>';
+ return h+'</div></div>';
+}
+function home(){
+ var a=P.BD1001;
+ return '<header><small>স্বাগতম</small><b>হ্যালো, সুমন</b></header><div class="wrap"><div class="search"><input id="q" placeholder="ট্র্যাকিং আইডি লিখুন" aria-label="ট্র্যাকিং আইডি"><button class="go" data-a="find">খুঁজুন</button></div>'+(S.err?'<p class="muted" style="margin:-6px 0 12px">'+S.err+'</p>':'')+
+ '<div class="stats"><div><b>২</b><span class="muted">চলমান</span></div><div><b>১</b><span class="muted">সম্পন্ন</span></div><div><b>০</b><span class="muted">সমস্যা</span></div></div>'+
+ '<h2>এখন যেটা পথে</h2><div class="card"><button class="hero" data-open="BD1001"><div class="row" style="padding:0"><div><b>'+a.item+'</b><small>BD1001 · '+a.eta+'</small></div>'+chip(a)+'</div><div class="bar"><i style="width:75%"></i></div><small class="muted" style="margin-top:6px">৫টি স্টপ বাকি · রফিক আসছেন</small></button></div></div>';
+}
+function list(){
+ var h='<header><small>সব পার্সেল</small><b>আমার পার্সেল</b></header><div class="wrap"><div class="card">';
+ Object.keys(P).forEach(function(id){var p=P[id];h+='<button class="row" data-open="'+id+'"><div><b>'+p.item+'</b><small>'+id+' · '+p.from+'</small></div>'+chip(p)+'</button>'});
+ return h+'</div></div>';
+}
+function notes(){
+ var h='<header><small>আপডেট</small><b>নোটিফিকেশন</b></header><div class="wrap"><div class="card">';
+ NOTES.forEach(function(n){h+='<div class="row"><span class="ni">'+n[0]+'</span><div style="flex:1">'+n[1]+'</div><small>'+n[2]+'</small></div>'});
+ return h+'</div></div>';
+}
+function prof(){
+ function sw(k,t){return '<div class="row"><span>'+t+'</span><button class="sw" role="switch" aria-label="'+t+'" aria-checked="'+S[k]+'" data-sw="'+k+'"></button></div>'}
+ return '<header><small>অ্যাকাউন্ট</small><b>সুমন আহমেদ</b></header><div class="wrap"><div class="card"><div class="row"><div><small>ফোন</small>01712-345678</div></div><div class="row"><div><small>ডিফল্ট ঠিকানা</small>মিরপুর ১০, ঢাকা</div></div></div><h2>নোটিফিকেশন</h2><div class="card">'+sw('sms','SMS আপডেট')+sw('push','পুশ নোটিফিকেশন')+'</div></div>';
+}
+function render(){
+ var app=document.getElementById("app");
+ app.innerHTML=S.open?detail(S.open):({home:home,box:list,bell:notes,user:prof}[S.tab==="home"?"home":S.tab])();
+ var nav=document.getElementById("nav");
+ nav.innerHTML=TABS.map(function(t){return '<button data-tab="'+t[0]+'" aria-current="'+(!S.open&&S.tab===t[0])+'"><svg viewBox="0 0 24 24">'+ICONS[t[0]]+'</svg>'+t[1]+'</button>'}).join("");
+ var r=document.getElementById("d");
+ if(r){var L=r.getTotalLength(),p=P[S.open],pt=r.getPointAtLength(L*p.prog);r.style.strokeDasharray=(L*p.prog)+" "+L;document.getElementById("m").setAttribute("transform","translate("+pt.x+" "+pt.y+")")}
+ window.scrollTo(0,0);
+}
+document.addEventListener("click",function(e){
+ var t=e.target.closest("[data-tab],[data-open],[data-a],[data-sw]");if(!t)return;
+ if(t.dataset.tab){S.tab=t.dataset.tab;S.open=null;S.err=""}
+ else if(t.dataset.open){S.open=t.dataset.open}
+ else if(t.dataset.sw){S[t.dataset.sw]=!S[t.dataset.sw]}
+ else if(t.dataset.a==="back"){S.open=null}
+ else if(t.dataset.a==="find"){var v=document.getElementById("q").value.replace(/[\s-]+/g,"").toUpperCase();if(P[v]){S.open=v;S.err=""}else S.err="পার্সেল পাওয়া যায়নি। BD1001 চেষ্টা করুন।"}
+ render();
+});
+render();
+</script>
+</body>
+</html>
