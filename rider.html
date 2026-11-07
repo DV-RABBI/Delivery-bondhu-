@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14378F">
+<title>ডেলিভারি ম্যান – ডেমো</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#14378F;--org:#F28C1B;--go:#13896F;--bg:#F4F6FB;--ink:#16224A;--mut:#5F6B8A;--line:#DCE2F0;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:#dfe5f3;color:var(--ink);font:400 16px/1.5 "Hind Siliguri",system-ui,sans-serif}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--org);outline-offset:2px}
+.app{max-width:480px;min-height:100dvh;margin:0 auto;background:var(--bg);position:relative;padding-bottom:40px}
+.hd{background:var(--navy);color:#fff;padding:calc(16px + env(safe-area-inset-top)) 18px 22px;border-radius:0 0 24px 24px;display:flex;justify-content:space-between;align-items:center}
+.hd small{opacity:.75;display:block;line-height:1.2}.hd b{font-size:22px}
+.sw{width:58px;height:32px;border-radius:99px;border:0;background:#6D7BA8;position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .15s}
+.sw[aria-checked=true]{background:var(--go)}.sw[aria-checked=true]::after{left:30px}
+.w{padding:14px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stats div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stats b{font-size:26px;display:block;line-height:1.2}.m{color:var(--mut);font-size:14px}
+h2{font-size:16px;color:var(--mut);margin:18px 2px 8px;font-weight:600}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.btn{display:block;width:100%;border:0;border-radius:14px;font-weight:700;font-size:18px;padding:13px;background:var(--org);color:#fff;margin-top:12px}
+.btn.g{background:var(--go)}.btn.l{background:#E3E8F5;color:var(--ink);font-weight:600;font-size:16px}
+.f{width:100%;font:inherit;font-size:22px;letter-spacing:.4em;text-align:center;padding:10px;border:2px solid var(--line);border-radius:12px;margin-top:10px}
+.pin{display:grid;grid-template-columns:auto 1fr;gap:3px 10px}.pin dt{color:var(--mut)}.pin dd{margin:0;font-weight:500}
+.steps{display:flex;gap:6px;margin:4px 0 12px}.steps i{flex:1;height:7px;border-radius:9px;background:var(--line)}.steps i.on{background:var(--go)}
+/* incoming order sheet */
+.ov{position:fixed;inset:0;background:#0009;z-index:20;display:none;align-items:flex-end;justify-content:center}
+.ov.on{display:flex}
+.sheet{background:#fff;width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:20px 18px calc(18px + env(safe-area-inset-bottom));animation:up .3s}
+@keyframes up{from{transform:translateY(100%)}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+.sheet h3{margin:0;font-size:22px;display:flex;justify-content:space-between;align-items:center}
+.timer{background:#E5252A;color:#fff;border-radius:99px;padding:0 12px;font-size:16px}
+.fee{font-size:30px;font-weight:700;color:var(--go)}
+.row2{display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.note{font-size:13px;color:var(--mut);text-align:center;margin:20px 14px 0}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;z-index:30;opacity:0;transition:opacity .25s;pointer-events:none}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div class="ov" id="ov" role="alertdialog" aria-label="নতুন অর্ডার"><div class="sheet" id="sheet"></div></div>
+<div id="toast"></div>
+<script>
+var SHOPS=[
+ {shop:"ফ্যাশন হাউস",item:"জামা (২টি)",from:"বসুন্ধরা সিটি, ঢাকা",to:"মিরপুর ১০, ঢাকা",km:"৪.২ কিমি",fee:60,cod:850,cust:"সুমন আহমেদ",ph:"01712345678",otp:"4821"},
+ {shop:"টেকশপ বিডি",item:"হেডফোন (১টি)",from:"এলিফ্যান্ট রোড, ঢাকা",to:"ধানমন্ডি ২৭, ঢাকা",km:"২.৮ কিমি",fee:50,cod:0,cust:"রিয়া খান",ph:"01898765432",otp:"7305"},
+ {shop:"রকমারি বুকস",item:"বই (৩টি)",from:"নীলক্ষেত, ঢাকা",to:"উত্তরা সেক্টর ৪, ঢাকা",km:"১১ কিমি",fee:90,cod:1200,cust:"তানভীর হাসান",ph:"01911223344",otp:"1593"}
+];
+var S={on:false,job:null,step:0,done:0,earn:0,left:30,idx:0,wait:null,tick:null};
+var app=document.getElementById("app"),ov=document.getElementById("ov"),sheet=document.getElementById("sheet");
+var LBL=["পিকআপ করেছি","রওনা দিয়েছি","ডেলিভারি সম্পন্ন করুন"],ST=["অর্ডার নেওয়া","ডেলিভারি ম্যান","পিকআপ","পথে","সম্পন্ন"];
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.className="on";setTimeout(function(){t.className=""},2200)}
+function bd(n){return String(n).replace(/\d/g,function(d){return "০১২৩৪৫৬৭৮৯"[d]})}
+function render(){
+ var h='<div class="hd"><div><small>স্বাগতম</small><b>রফিক ভাই</b></div><div style="text-align:right"><small>'+(S.on?'অনলাইন':'অফলাইন')+'</small><button class="sw" id="sw" role="switch" aria-checked="'+S.on+'" aria-label="অনলাইন"></button></div></div><div class="w">'+
+ '<div class="stats"><div><b>'+bd(S.done)+'</b><span class="m">আজকের ডেলিভারি</span></div><div><b>৳'+bd(S.earn)+'</b><span class="m">আজকের আয়</span></div></div>';
+ if(S.job){var j=S.job;
+  h+='<h2>চলমান অর্ডার</h2><div class="card"><div class="steps">'+ST.map(function(s,i){return '<i class="'+(i<=S.step+1?'on':'')+'"></i>'}).join("")+'</div><b>'+j.item+'</b> <span class="m">· '+j.shop+'</span><dl class="pin"><dt>পিকআপ</dt><dd>'+j.from+'</dd><dt>ডেলিভারি</dt><dd>'+j.to+'</dd><dt>কাস্টমার</dt><dd>'+j.cust+' · <a href="tel:'+j.ph+'">কল</a></dd>'+(j.cod?'<dt>ক্যাশ</dt><dd>৳'+bd(j.cod)+' নিতে হবে</dd>':'')+'</dl>';
+  if(S.step===2)h+='<input class="f" id="otp" inputmode="numeric" maxlength="4" placeholder="OTP" aria-label="OTP"><p class="m" style="text-align:center;margin:6px 0 0">কাস্টমারের OTP: ডেমোতে '+j.otp+'</p>';
+  h+='<button class="btn'+(S.step===2?' g':'')+'" id="nx">'+LBL[S.step]+'</button></div>';
+ }else{
+  h+='<div class="card" style="margin-top:14px;text-align:center"><div style="font-size:44px">'+(S.on?'📡':'😴')+'</div><b>'+(S.on?'নতুন অর্ডারের অপেক্ষায়…':'অনলাইন হলে অর্ডার আসবে')+'</b><div class="m">'+(S.on?'অর্ডার এলে ফোনে নোটিফিকেশন যাবে':'উপরের সুইচ চালু করুন')+'</div></div>'+(S.on?'<button class="btn l" id="sim">দোকান থেকে নতুন অর্ডার পাঠান (ডেমো)</button>':'');
+ }
+ app.innerHTML=h+'</div><p class="note">এটি ডেমো। আসল সিস্টেমে দোকানের API থেকে অর্ডার আসে।</p>';
+ document.getElementById("sw").onclick=function(){S.on=!S.on;clearTimeout(S.wait);if(S.on&&!S.job)S.wait=setTimeout(incoming,2500);render()};
+ var sim=document.getElementById("sim");if(sim)sim.onclick=incoming;
+ var nx=document.getElementById("nx");if(nx)nx.onclick=next;
+}
+function incoming(){
+ if(!S.on||S.job)return;
+ var o=SHOPS[S.idx++%SHOPS.length];S.cur=o;S.left=30;
+ if(navigator.vibrate)navigator.vibrate([300,100,300]);
+ sheet.innerHTML='<h3>🛵 নতুন অর্ডার <span class="timer" id="tm">৩০</span></h3><p class="m" style="margin:2px 0 10px">'+o.shop+'</p><div class="row2"><div><div class="fee">৳'+bd(o.fee)+'</div><span class="m">আপনার আয়</span></div><dl class="pin" style="align-self:center"><dt>দূরত্ব</dt><dd>'+o.km+'</dd><dt>পণ্য</dt><dd>'+o.item+'</dd>'+(o.cod?'<dt>ক্যাশ</dt><dd>৳'+bd(o.cod)+'</dd>':'')+'</dl></div><dl class="pin" style="margin-top:12px"><dt>পিকআপ</dt><dd>'+o.from+'</dd><dt>ডেলিভারি</dt><dd>'+o.to+'</dd></dl><div class="row2" style="margin-top:6px"><button class="btn l" id="rj">বাদ দিন</button><button class="btn g" id="ac">গ্রহণ করুন</button></div>';
+ ov.classList.add("on");
+ clearInterval(S.tick);S.tick=setInterval(function(){S.left--;var t=document.getElementById("tm");if(t)t.textContent=bd(S.left);if(S.left<=0)close("সময় শেষ")},1000);
+ document.getElementById("ac").onclick=function(){close();S.job=S.cur;S.step=0;toast("অর্ডার আপনার নামে নিশ্চিত হয়েছে");render()};
+ document.getElementById("rj").onclick=function(){close("অর্ডার বাদ দিয়েছেন")};
+}
+function close(m){clearInterval(S.tick);ov.classList.remove("on");if(m){toast(m);S.wait=setTimeout(incoming,6000)}}
+function next(){
+ if(S.step===2){var v=document.getElementById("otp").value;if(v!==S.job.otp)return toast("OTP ভুল");S.done++;S.earn+=S.job.fee;toast("ডেলিভারি সম্পন্ন! ৳"+bd(S.job.fee)+" যোগ হয়েছে");S.job=null;S.step=0;if(S.on)S.wait=setTimeout(incoming,5000)}
+ else S.step++;
+ render();
+}
+render();
+</script>
+</body>
+</html>
